@@ -1,0 +1,152 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@model IEnumerable<IdentityUser>
+
+@{
+	ViewData["Title"] = "KullaniciOnay";
+	Layout = "_LayoutAdmin";
+}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+
+<div class="col-md-10">
+	<h1>Onay Ekranı</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.UserName)
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td style="width:100px;">
+						@Html.DisplayFor(modelItem => item.UserName)
+					</td>
+					<td>
+						@if (!item.EmailConfirmed)
+						{
+							<button type="button" class="btn btn-outline-info" onclick="Onayla('@item.UserName', '@item.Id')">Onay</button>
+							<img id="onaygorseli-@item.Id" src="https://cdn.pixabay.com/photo/2016/01/20/18/59/confirmation-1152155_960_720.png" style="width:30px;display:none;" />
+						}
+					</td>
+					<td>
+						<button type="button" class="btn btn-outline-info" onclick="SifreGonder('@item.UserName', '@item.Id')">Şifre Gönder</button>
+					</td>
+				</tr>
+			}
+
+
+	@* 		@foreach (var item in Model)
+			{
+				<tr>
+					<td style="width:100px;">
+						@Html.DisplayFor(modelItem => item.UserName)						
+					</td>
+					<td style="width:100px;"> 									 
+						@if (item.EmailConfirmed == false)
+						{						  
+							<button type="button" id="OnaylaBtn" class="btn btn-outline-info" onclick="Onayla('@item.UserName')">Onay</button>
+						}						
+					</td>
+					<td>
+						<img id="onaygorseli" src="https://cdn.pixabay.com/photo/2016/01/20/18/59/confirmation-1152155_960_720.png" style="width:30px;display:none;" />
+					</td>
+					<td>
+						<button type="button" id="OnaylaBtn" class="btn btn-outline-info" onclick="SifreGonder('@item.UserName')">Şifre Gönder</button>
+					</td>
+					@* <td>
+				    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+					<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a> 						
+					</td> 
+				</tr>
+			} *@
+		</tbody>
+	</table>
+</div>
+
+<script>
+
+	function SifreGonder(username, id) {
+	
+		$.ajax({
+			url: "/User/RandomSifreOlusturma/?username=" + username,
+			type: 'post',
+
+			success: function (metottanGelenDeger) {
+
+				if (metottanGelenDeger === "ok") {
+					$('#onaygorseli-' + id).show();
+					// 	document.getElementById('redgorseli').style.display = 'none';
+					window.location = "/User/SifreOnay/?username="+username;
+				}
+				else {
+					alert("yetki yok");
+				}
+				// else {
+				// 	document.getElementById('onaygorseli').style.display = 'none';
+				// 	document.getElementById('redgorseli').style.display = 'block';
+
+				// }
+			},
+			error: function (metottanGelenDeger) {
+
+			}
+
+		})
+	}
+
+
+
+	// function Onayla(username) {		
+
+	// 	$.ajax({
+	// 		url: "/User/Onay/?username=" + username,
+	// 		type: 'post',
+
+	// 		success: function (metottanGelenDeger) {
+
+	// 			 if (metottanGelenDeger === "ok") {
+	// 				 document.getElementById('OnaylaBtn').style.display = 'none'; //button gizler
+	// 			 	 document.getElementById('onaygorseli').style.display = 'block'; //onay görselini açtık					
+	// 			// 	document.getElementById('redgorseli').style.display = 'none';
+	// 			}
+	// 			// else {
+	// 			// 	document.getElementById('onaygorseli').style.display = 'none';
+	// 			// 	document.getElementById('redgorseli').style.display = 'block';
+
+	// 			// }
+	// 		},
+	// 		error: function (metottanGelenDeger) {
+
+	// 		}
+
+	// 	})
+	// }
+
+	function Onayla(username, id) {
+		$.ajax({
+			url: "/User/Onay/?username=" + username,
+			type: 'post',
+			success: function (metottanGelenDeger) {
+				if (metottanGelenDeger === "ok") {
+					// İlgili satırdaki onay görselini bulup göster
+					$('#onaygorseli-' + id).show(); 
+				}
+			},
+			error: function (metottanGelenDeger) {
+				// Hata durumunda yapılacak işlemler
+			}
+		});
+	}
+
+</script>

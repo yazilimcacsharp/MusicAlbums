@@ -1,0 +1,48 @@
+﻿@{
+	Layout = "_LayoutAdmin";
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+<br />
+<div class="col-md-6">
+	<input id="tcno" class="form-control" type="text" placeholder="TcNo Giriniz" onkeyup="TcNoKontrol();" />
+	@* <button class="btn btn-primary" onclick="TcNoKontrol();">Kontrol</button> *@
+
+	<img id="onaygorseli" src="https://cdn.pixabay.com/photo/2016/01/20/18/59/confirmation-1152155_960_720.png" style="width:30px;display:none;" /> @* tcno dogru ise yeşil tik görseli gösterme , *@
+
+	<img id="redgorseli" src="https://cdn.pixabay.com/photo/2015/06/09/16/12/error-803716_960_720.png" style="width:35px;display:none;" /> @*hatalı görsel*@
+</div>
+
+<script>
+	function TcNoKontrol() {
+		var tcno = document.getElementById('tcno').value;
+		//alert(tcno);
+		$.ajax({
+			url: "/Album/TcNoKontrol/" + tcno,
+			type: 'post',
+			//data:tcno,
+
+			success: function (metottanGelenDeger) {
+
+				if (metottanGelenDeger === "ok") {
+					document.getElementById('onaygorseli').style.display = 'block';
+					document.getElementById('redgorseli').style.display = 'none';
+				}
+				else {
+					document.getElementById('onaygorseli').style.display = 'none';
+					document.getElementById('redgorseli').style.display = 'block';
+
+				}
+			},
+			error: function (metottanGelenDeger) {
+
+			}
+
+		})
+	}
+</script>
+
+
+@* brute force *@

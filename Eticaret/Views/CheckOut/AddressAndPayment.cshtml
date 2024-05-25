@@ -1,0 +1,38 @@
+﻿
+<script src="~/js/jquery3.7.1.js"></script>
+
+<div style="margin-top:9%;">
+
+<p>Ödeme Sayfası</p>
+
+<input type="text" id="code" name="code" />
+	<a asp-action="KrediKartiEkle" asp-controller="CheckOut">Kredi Kartı Ekle</a>
+<button type="button" class="form-control" onclick="OdemeYap()">Ödemeyi Yap</button>
+
+</div>
+
+
+<script>
+	function OdemeYap(){
+
+		let code=document.getElementById('code').value;	
+
+		$.ajax({
+			url:"/User/OdemeYap/?code="+code,
+			type:"post",
+
+			success: function (data) {
+				if (data === "ok") {
+					window.location = "/User/PaymentSuccess/";
+				}
+				else {
+					alert("Ödeme alınamadı");
+					window.location = "/ShoppingCart/Index";
+				}
+			},
+			error: function (data) {
+
+			}
+		});
+	}
+</script>

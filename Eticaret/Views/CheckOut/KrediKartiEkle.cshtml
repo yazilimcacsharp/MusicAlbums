@@ -1,0 +1,58 @@
+﻿@model Eticaret.Models.CreditCart
+
+@{
+    ViewData["Title"] = "KrediKartiEkle";
+}
+
+<h1>KrediKartiEkle</h1>
+
+<h4>CreditCart</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="KrediKartiEkle">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AdSoyad" class="control-label"></label>
+                <input asp-for="AdSoyad" class="form-control" />
+                <span asp-validation-for="AdSoyad" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KartNumarasi" class="control-label"></label>
+                <input asp-for="KartNumarasi" class="form-control" />
+                <span asp-validation-for="KartNumarasi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SonKullanma" class="control-label"></label>
+                <input asp-for="SonKullanma" class="form-control" />
+                <span asp-validation-for="SonKullanma" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CVV" class="control-label"></label>
+                <input asp-for="CVV" class="form-control" />
+                <span asp-validation-for="CVV" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KullanılabilirLimit" class="control-label"></label>
+                <input asp-for="KullanılabilirLimit" class="form-control" />
+                <span asp-validation-for="KullanılabilirLimit" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="AktifMi" /> @Html.DisplayNameFor(model => model.AktifMi)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,32 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+
+@* <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script> *@
+
+<script src="~/js/jquery3.7.1.js"></script>
+
+<div class="col-md-12">
+    <input type="file" id="dosyaYukle" />
+    <button onclick="fotoYukle();">Yükle</button>
+</div>
+
+
+<script>
+    function sayHello() {
+        alert("merhaba");
+    }
+
+    function fotoYukle() {
+        const file=dosyaYukle.files[0];
+        const url = `/api/FileUpload/uploadFile2/`;
+        const formData = new FormData();
+        formData.append('file', file);
+
+        fetch(url,{
+            method:'POST',
+            body: formData,
+        })
+    }
+</script>
+

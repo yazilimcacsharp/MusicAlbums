@@ -1,0 +1,71 @@
+﻿@model Eticaret.ViewModels.ShoppingCartViewModel
+
+@{
+	ViewBag.Title = "Shopping Cart";
+}
+
+<script src="~/js/jquery3.7.1.js"></script>
+
+<h3>
+	Sepetteki Ürünler
+</h3>
+
+<div style="margin-top:9%;">
+
+	<table class="table">
+		<tr>
+			<th>
+				Album Adı
+			</th>
+			@* 	<th>
+			Album Id
+			</th> *@
+			<th>
+				Fiyat
+			</th>
+			<th>
+				Adet
+			</th>
+			<th>
+				Sil
+			</th>
+		</tr>
+		@foreach (var item in Model.CartItems)
+		{
+			<tr>
+				<td>@item.Album.Baslik</td>				
+				<td>@item.Album.Fiyat</td>
+				<td>@item.Count</td>				
+				<td><a href="#" onclick="fn('@item.RecordId')">Sil</a></td>				
+			</tr>
+		}
+	</table>
+</div>
+
+
+
+<a href="/CheckOut/AddressAndPayment/">Sepeti Onayla 1</a>
+<a href="/CheckOut/AddressAndPayment2/">Sepeti Onayla 2(Kredi Kartı)</a>
+
+<a href="/ShoppingCart/EmptyCart"><img src="https://media.istockphoto.com/id/1022614634/tr/vekt%C3%B6r/arabas%C4%B1-simgesini-kald%C4%B1r%C4%B1n-basit-simge-unsuru-premium-kalite-grafik-tasar%C4%B1m-simgesi-web.jpg?s=1024x1024&w=is&k=20&c=F2wVPBzSOk7j5Puz3mazEayGhMRs2cqLR47xTQAtE8M=" style="width:200px;height:200px;" />Sepeti Boşalt</a>
+
+
+
+<script>
+	function fn(id) {
+		//alert(id);
+		$.ajax({
+			url: "/ShoppingCart/RemoveFromCart/?id=" + id,
+			type: 'post',
+
+			success: function (metottanGelenDeger) {
+				//alert(metottanGelenDeger);
+				location.reload(); //sayfayı yeniden işlem sonrası yüklettik.
+			},
+			error: function (metottanGelenDeger) {
+
+			}
+		});
+	}
+
+</script>

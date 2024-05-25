@@ -1,0 +1,83 @@
+﻿@{
+	Layout = "_LayoutAdmin";
+}
+
+
+@model Eticaret.Models.Album
+
+@{
+	ViewData["Title"] = "Edit";
+}
+
+<div class="col-md-10">
+	<h1>Edit</h1>
+
+	<h4>Album</h4>
+	<hr />
+
+	<form asp-action="Edit" method="post" enctype="multipart/form-data">
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		<input type="hidden" asp-for="AlbumId" />
+		<div class="form-group">
+			<label asp-for="Ad" class="control-label"></label>
+			<input asp-for="Ad" class="form-control" />
+			<span asp-validation-for="Ad" class="text-danger"></span>
+		</div>
+		@*    <div class="form-group">
+		<label asp-for="AlbumArtUrl" class="control-label"></label>
+		<input asp-for="AlbumArtUrl" class="form-control" />
+		<span asp-validation-for="AlbumArtUrl" class="text-danger"></span>
+		</div> *@
+		<div class="form-group">
+			<label>Albüm Kapak Görsel</label>
+			<br />
+			<input type="file" id="dosyaYukle" name="file" />
+			@* <button onclick="fotoYukle();">Yükle</button> *@
+		</div>
+		<div class="form-group">
+			<label asp-for="Baslik" class="control-label"></label>
+			<input asp-for="Baslik" class="form-control" />
+			<span asp-validation-for="Baslik" class="text-danger"></span>
+		</div>
+		<div class="form-group">
+			<label asp-for="Fiyat" class="control-label"></label>
+			<input asp-for="Fiyat" class="form-control" />
+			<span asp-validation-for="Fiyat" class="text-danger"></span>
+		</div>
+		<div class="form-group form-check">
+			<label class="form-check-label">
+				<input class="form-check-input" asp-for="AktifMi" /> @Html.DisplayNameFor(model => model.AktifMi)
+			</label>
+		</div>
+		<div class="form-group">
+			<input type="submit" value="Save" class="btn btn-primary" onclick="fotoYukle()" />
+		</div>
+	</form>
+
+
+	<div>
+		<a asp-action="Index">Back to List</a>
+	</div>
+
+	@section Scripts {
+		@{
+			await Html.RenderPartialAsync("_ValidationScriptsPartial");
+		}
+	}
+</div>
+
+<script>
+
+	function fotoYukle() {
+		const file = dosyaYukle.files[0];
+		const url = `/api/FileUpload/uploadFile2/`;
+		const formData = new FormData();
+		formData.append('file', file);
+
+		fetch(url, {
+			method: 'POST',
+			body: formData,
+		})
+	}
+
+</script>

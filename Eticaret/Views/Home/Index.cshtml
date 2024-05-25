@@ -1,0 +1,50 @@
+﻿@model Eticaret.ViewModels.CokSatanTurViewModel
+
+
+<!-- ***** Main Banner Area Start ***** -->
+<div class="main-banner" id="top">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-3">
+				<h1>Çok Satan Albümler</h1>
+				@foreach (var item in Model.Albums)
+				{
+					<p>@item.AlbumId</p>
+					<img src="@item.AlbumArtUrl"  style="width:80px;height:80px;"/>
+				}
+
+			</div>
+			<div class="col-lg-9">
+				<h1>Müzik Türleri</h1>
+				<div class="right-content">
+					<div class="row">					
+						@foreach (var item in Model.Turs)
+						{
+							<div class="col-lg-3">
+								<div class="right-first-image">
+									<div class="thumb">
+										<div class="inner-content">
+											<h4>@item.TurAdi</h4>
+											@*<span>@item.FotografYolu</span> *@
+										</div>
+										<div class="hover-content">
+											<div class="inner">
+												<h4>@item.TurAdi</h4>
+												<div class="main-border-button">
+													<a href="/Home/KategoriyeGoreAlbumler/@item.TurId">Albümleri Gör</a>
+												</div>
+											</div>
+										</div>
+										<img src="@item.FotografYolu" style="width:200px;height:200px;">
+									</div>
+								</div>
+							</div>
+						}
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- ***** Main Banner Area End ***** -->

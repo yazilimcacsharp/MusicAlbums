@@ -1,0 +1,85 @@
+﻿@model Eticaret.Models.Album
+
+<script src="~/js/jquery3.7.1.js"></script>
+
+<div style="margin-top:9%;">
+	<!-- ***** Product Area Starts ***** -->
+	<section class="section" id="product">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="left-images">
+						<img src="@Model.AlbumArtUrl" alt="albumGorseli" title="albumgorsel2" style="width:250px;">
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="right-content">
+						<h4>@Model.Ad</h4>
+						@Html.HiddenFor(x => x.AlbumId)  @*albumun hangisi eklendi bilgisini AlbumId değerinden almak için*@
+						@Html.HiddenFor(x => x.Fiyat)  @*albumun hangisi eklendi bilgisini AlbumId değerinden almak için*@
+
+						<span class="price">@Model.Fiyat</span>
+						@*   <ul class="stars">
+						<li><i class="fa fa-star"></i></li>
+						<li><i class="fa fa-star"></i></li>
+						<li><i class="fa fa-star"></i></li>
+						<li><i class="fa fa-star"></i></li>
+						<li><i class="fa fa-star"></i></li>
+						</ul> *@
+						@*  <span>@Model.Ad</span> *@
+						<div class="quote">
+							<i class="fa fa-quote-left"></i><p>@Model.Ad</p>
+						</div>
+						<div class="quantity-content">
+							<div class="left-content">
+								@*  <h6>No. of Orders</h6> *@
+							</div>
+							<div class="right-content">
+								<div class="quantity buttons_added">
+									<input type="button" value="-" class="minus"><input type="number" step="1" min="1" max="" name="quantity" id="Quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus" onclick="">
+								</div>
+							</div>
+						</div>
+						<div class="total">
+							@*   <h4>Total: $210.00</h4> *@							
+							<div class="main-border-button"><a onclick="sepeteEkle()">Sepete Ekle</a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- ***** Product Area Ends ***** -->
+</div>
+
+
+<script src="~/js/quantity.js"></script>
+
+<script>
+
+	function sepeteEkle() {
+		//1.urunid bilgisini al oku
+		//2.kaç tane oldugunu oku.
+		//3.Session aracılıgı ile Sepet nesnesine doldur.
+		let albumid=document.getElementById('AlbumId').value;
+		let quantity = document.getElementById('Quantity').value;
+		//let fiyat = document.getElementById('Fiyat').value;
+		//alert(fiyat);
+		//alert(albumid);
+		//alert(quantity);
+
+		$.ajax({
+			url: "/ShoppingCart/AddToCart/?AlbumId=" + albumid+"&adet="+quantity,
+			type: 'post',
+
+			success: function () {
+				window.location = "/ShoppingCart/Index";
+			},
+			error: function (metottanGelenDeger) {
+				
+			}
+
+		})
+
+	}
+</script>

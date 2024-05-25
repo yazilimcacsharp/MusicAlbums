@@ -1,0 +1,123 @@
+﻿@{
+	Layout = "_LayoutAdmin";
+}
+
+@model IEnumerable<Eticaret.Models.Album>
+
+@{
+	ViewData["Title"] = "Albumler";
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+<div class="col-md-10">
+	<h1>Albumler</h1>
+
+	<p>
+		<a asp-action="AlbumEkle">Yeni OLuştur </a>
+	</p>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.Ad)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.AlbumArtUrl)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Baslik)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Fiyat)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.AktifMi)
+				</th>
+				<th>
+					@Html.DisplayName("Artist")
+				</th>
+				<th>
+					@Html.DisplayName("Tür")
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Ad)
+					</td>
+					<td>
+						@* @Html.Image(modelItem => item.AlbumArtUrl) *@
+
+						@* <img src="~/images/kedi.jpg" /> *@
+						<img src="@item.AlbumArtUrl" style="width:75px;height:75px;" />
+
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Baslik)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Fiyat)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.AktifMi)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Artist.Name)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Tur.TurAdi)
+					</td>
+					<td>
+						<a asp-action="Edit" asp-route-id="@item.AlbumId">Edit</a> |
+						<a asp-action="Details" asp-route-id="@item.AlbumId">Details</a> |
+						<a asp-action="Delete" asp-route-id="@item.AlbumId">Delete</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+	<button class="btn btn-danger" onclick="sil();">Silinenleri Getir</button>
+	<button class="btn btn-primary" onclick="anasayfayagit();">Anasayfaya Git</button>
+	
+</div>
+
+<script>
+	
+	function sil() {
+		//backende ajax.post yardımıyla gidecek ve işi yapacak
+		$.ajax({
+			type:'Post',
+			url: "/Album/TopluSilme",
+			success: function () {
+				//alert("success");
+				//alert(window.location.href); //sayfanın urlini verir.
+
+				//eğer farklı bir sayfaya gitsin istersek window.location.href="/Home/Urunler" diyerek farklı linke yönlendirme yapılabilir.
+
+				window.location.reload();
+
+
+			},
+			error:function(error,hata,message){
+				//alert(error.statusCode);
+				//alert(hata);
+				//alert(message);
+				//alert("error");
+			}
+
+		})
+	}
+
+	function anasayfayagit() {
+		window.location.href = "/Home/Index";
+	}
+
+</script>
+
+

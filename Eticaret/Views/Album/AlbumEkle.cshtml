@@ -1,0 +1,100 @@
+﻿@model Eticaret.Models.Album
+
+@{
+    ViewData["Title"] = "AlbumEkle";
+    Layout = "_LayoutAdmin";
+}
+<script src="~/js/jquery3.7.1.js"></script>
+
+<div class="col-md-12">
+
+
+    <h1>AlbumEkle</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AlbumEkle" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label>Albüm Adı</label>
+                    <input asp-for="Ad" class="form-control" />
+                    <span asp-validation-for="Ad" class="text-danger"></span>
+                </div>
+               @*<div class="form-group">
+                    <label>Albüm Kapak Görseli</label>
+                    <input asp-for="AlbumArtUrl" class="form-control" />
+                    <span asp-validation-for="AlbumArtUrl" class="text-danger"></span>
+                </div> *@
+                <div class="form-group">
+                    <label>Albüm Kapak Görsel</label>
+                    <br />
+                    <input type="file" id="dosyaYukle" name="file" />
+                    @* <button onclick="fotoYukle();">Yükle</button> *@
+                </div>        
+
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input asp-for="Baslik" class="form-control" />
+                    <span asp-validation-for="Baslik" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Fiyat" class="control-label"></label>
+                    <input asp-for="Fiyat" class="form-control" />
+                    <span asp-validation-for="Fiyat" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="AktifMi" /> @Html.DisplayNameFor(model => model.AktifMi)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Sanatçı Seç</label>
+                    <select asp-for="ArtistId" class="form-control" asp-items="ViewBag.artists">
+                        <option>Seçiniz</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tür Seç</label>
+                    <select asp-for="TurId" class="form-control" asp-items="ViewBag.turler">
+                        <option>Seçiniz</option>
+                    </select>
+                </div>
+
+
+                
+                <div class="form-group">
+                    <input type="submit" value="Oluştur" class="btn btn-primary" onclick="fotoYukle()" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script>
+
+ function fotoYukle() {
+        const file=dosyaYukle.files[0];
+        const url = `/api/FileUpload/uploadFile2/`;
+        const formData = new FormData();
+        formData.append('file', file);
+
+        fetch(url,{
+            method:'POST',
+            body: formData,
+        })
+    }
+
+
+</script>
+                   
+

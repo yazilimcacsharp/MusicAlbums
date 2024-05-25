@@ -1,0 +1,169 @@
+﻿Projenin Özellikleri
+*rol tabanlı üyelik sistemli 
+*Admin panelli (rolekle,uye ekle,album ekleme,muzik türü ekleme, sanatci ekleme, sanatci düzenlemeleri vs.)
+*hazır html template giydirme
+themewagon,themeforest,başka sitenin tasarımını,codepen.io vs.
+*asp.net core 8 proje oluşturduk. 
+*MVC ile geliştirildi.
+*veriye erişim için Code First Entity Framework yapısını kullandık.
+
+
+
+Katmanlı Mimari
+(MVC katmanlı mimari- Ntier (cok katmanlı) )
+katmanlı mimari (onion-design pattern vs.)
+*farklı kişiler çabuk entegre olsun
+*proje büyüdüğünde yönetimi,geliştirmesi kolaylaşsın
+*sen gitsen de senin yerine projeyi yönetebilsinler.
+
+Yapılanlar
+*kullanıcı onay ekranı, ajax ile onaylama
+*user ekleme
+*usera şifre oluşturup dbye kaydetme
+*kullanıcı ve rollerini gördüğümüz ekran
+
+
+TodoList
+*file erişim iznini öğrencide deneyelim, IWebHostEnvironment ile çözdük+
+*album içerisine file yukleme kısmını taşıyalım.+
+*Kullanıcılar sayfası bir daha yapılacak.+ (eğer kullanıcının rolü yoksa o listede gözükmüyordu, left join, right join ya da full outer join yapısını kullanarak rolü olmasa da kullanıcının listede gözükmesini sağlamış olduk.)+
+
+Nerde Kaldık?
+-Turlere baglı album datasını dbye ekleme ve anasayfadaki türe tıklanınca ilgili albumleri yeni bir sayfada listeleme işlemi+
+-OrderDetails sipariş detay sayfası oluşturulacak
+-Session (Sepet mantığı) +
+-Ödeme (ziraat bankası)
+https://www.ideasoft.com.tr/e-ticaret-yardim/ziraat-bankasi-sanal-pos-kurulum-kilavuzu/
+https://github.com/cempehlivan/CP.VPOS/tree/master
+-API
+-Geçmişten kalan konu başlıkları
+
+
+*mail açtık, farklı mailden bu hesaba mail atabildik fakat burdan gönderemedik++
+muzikciyenimuzikci@gmail.com
+music123456A.bc
+1. Google üzerinden hesaba giriş yapılır.
+2. two factor authentication özelliği açılır.
+3. panelden app-passwords dedik, yeni bi uygulama oluşturduk. Oluşma işlemi sonrası alttaki gibi bir şifre verdi. Kodun içine 
+mail,sifre(alttaki şifre)
+hferpbhjzywhioqk
+
+
+User PasswordHash Çözülünce alttaki  ok
+*usera şifre oluşturup dbye kaydetme ++
+
+
+
+İhtiyaç olabilecekler
+*usera şifre oluşturup dbye kaydetme (sms gönderme ihtiyacı olabilir+)
+
+
+Session Nedir?
+Oturum anlamına gelir.
+veriyi server tarafında tutar.
+herhangi bir cihazdan giriş yapıldıgında o kişiye bir oturum açar.(session ile tutulur - dbye yazmak gerekir.) böylece farklı cihazlardan giriş yapıldıgında telefondan eklediği hamburgeri, pcden oturum açınca da görür.
+
+1.Program.cs içerisine Session eklenir.
+ builder.Services.AddSession(); //session kullanmak istiyorum ekle.
+  app.UseSession();  //session yapısını kullan.
+
+
+
+  Projeyi kendi tarafımızda çalıştırmak için
+  1.appsettings.json kısmındaki server : bilgisini değiştir.
+  2.pm (package manager) console aç:
+	update-database -Context EticaretVeritabaniContext yaz
+	update-database -Context ApplicationDbContext yaz
+  3.albums-turs-sanatçı verilerini helperlar içerisinde doldurmuştuk. (data Seed: uygulamanın çalışması için gerekli olan verinin ayarlanması kodları)
+  4. album datalarını ekklerken hepsini AktifMi bilgisi 0 yani false olacak şekilde eklemişiz. alttaki kodu çalıştırarak tablodaki album datalarının id bilgisi tek olanlarını aktif olarak güncellemesini sağladık.
+  update Albums set AktifMi=1 where AlbumId%2=1
+  5.Rol tablosuna: 1 Admin, 2 Uye ,3 Operatör
+  6.projeyi çalıştırıp ara yüzden üye olduk. 
+  7. aspnetUserRoles tablosuna 6daki oluşturdugum user'ın Id bilgisini alıp bu tabloya admin rolunde yazdık.
+  UserId - 1 
+  8.logout- login işlemi sonrasında rolu admin oldugu için üst menüde Admin başlıgını gördük, Admine tıklayıp yönetim paneline geçtik..
+
+
+  
+çözüldü
+*ilk açılışta sepetteki ürün adedi düzgün gözükmüyor.+ 
+*Ödeme ekranı açılırken kullanıcı login mi diye baktık, eğer login ise direkt ödeme sayfasına gidecek, login değilse önce login olmalı sonra ödeme sayfasına geçmeli. +
+
+*kullanıcı rol atama ekranında kaldık - (toplu değiştirme) change tracking (bakılacak). 
+update içeren sql kodunu yazdık. ++
+*bug: onaylama yapıyor, onaylanınca yeşil tik gösteriyor fakat aynı sayfada farklı userlar için yapınca görsel stabil değil.++
+ sayfadaki farklı kayılar için eklediğimiz bütün onay görsellerinin id bilgisi onaygorseli idi. tıklanınca sayfada en tepede buldugunu gösteriyordu. Bunu biz her img'ye isim verirken onaygorseli-itemid ile isimlendirdik. böylece herkesin görseli kendi satırındaki oldu. id değeri unique oldugu için her satırdaki dogru görsel gösterildi.++
+*user şifre güncelleme kısmı (Kullanıcı Onay sayfasındaki Şifre Gönder buttonu, arkada randım şifre oluşturup bu bilgiyi Users tablosuna kaydediyor fakat hashleme işlemi yapmadan, bu user bilgi güncelleme kısmındaki kodumuzu üyelik kısmını yazanların yazdıgı kodu kullanarak Kendisinin güncelleme yapıp passwordu hashleyip kaydetmesini sağlayalım.)++
+*random ile üretilen şifreyi, bir tabloya yazalım. (Id,üretilensifre,uretilmeZamanı,kullanıcıMaili,aktifMi) , ayrıca mail olarak gönderelim.
+-SİFRENİN İPTAL OLMA ZAMANI OLMALI,
+-Kullanıcının mail ile iletilen şifreyi girmesi lazım.  eğer doogru girerse, hala zaman geçmemişse bu durumda o kullanıcının üyeliği aktif duruma getirilir.++
+
+*removefromcart kısmı çalışıyor, geriye dönen değer json türünden, aynı sayfada kalmalıyız ve bu değerleri sayfa göstermeliyiz.++
+
+*ödeme tarafı için login olan kullanıcıya, sistemden ürettiğimiz random kodu mail olarak iletiriz. kullanıcıya giden kodu tabloda kod, username ve gönderilme tarihi olarak tutarız. 
+*kod gönderildikten sonra 2 dk içerisinde eğer kullanıcı bizim ona gönderdiğimiz kodu zaman dolmadan dogru bir şekilde girebilmişse ödemeyi almış sayarız.
+Çözümü: UserPaymentCodeHistories tablosuna kaydettik,ordan bakabilirsinz.
+
+
+*Kredi kartı bilgilerini tutacak bir tablo oluşturalım. ++
+*KrediKartiId,KrediKartNumarasi,SKT(ay/yıl),CVV,Ad-Soyad,Bakiye++
+*dummy (ödeme aşamasında kullanabileceğimiz bir-kaç tane kart tanımlayalım.)++
+
+*checkOut sayfasında, adres bilgisinii girdikten sonra, kredi kartı bilgilerini de kullanıcıdan alalım.(kredi kartı kontrolü ve limit kontrolü yapılacak o anki alışveriş tutarı ile kartın bakiyesi uygun mu?) eğer uygunsa alışveriş onaylandı maili atılır.(kargo tarafına iletilir.)++
+
+
+yapılacaklar
+*sepete eklendikten sonra order(sipariş) tablosuna kayıt eklenecek. +
+*çok satan albumlerin anasayfaya eklenmesi. 
+--anasayfaya orderdetails tablosuna bakarak, albumid'ye göre gruplandırıp en cok satan 5 albumu gösterelim.
+--select top 5 AlbumId,sum(Quantity) from Orderdetails group by AlbumId (SQL Karşılıgı)
+
+
+bug
+*modalpopup seçimi projede gösterilemiyor+ /Home/Test/ bu sayfada kullandık.+
+*mail olarak gönderilen html sayfası mail içerisinde html olarak değil string olarak gözüküyor, bu kısmın html olarak gözükmesinin sağlanması(test edilecek.)
+
+
+API konusu
+*Veri değişikliği anlıksa bu duurmda kullanılır.
+Örn: EfaturaEntegrasyonu, FacebookAPI ile login, GoogleAPI ile login, BankaAPI'si  Ödeme sonrası kart bakiye Güncellenmesi, altınApısi, hava durumu Apisi vs.
+
+1.Kendi API'ni yaz onu kullan.
+.net core 3 ile yazılmış bir uygulama var.(kişilerin performanslarını cektiğimiz bir modul kullanılmış)
+2.başkasının API'sini çağır onu kullan. 
+(OpenWeather,TwitterAPI,FourSquareAPI,SwarmUygulaması)
+
+
+neden apiye ihtiyacım var?
+kişilerin performanslarını cektiğimiz bir modul kullanılmış: x ekibi geliştirmiş
+upgrade: java ile yazılmış bir modül.
+
+.net 3 ile geliştirilen uygulamadan .net 8 modülü çağırılamadı.
+*1..net 3 ile geliştirilen uygulamayı .net 8e upgrade etme işlemi.(2 yıllık bir süreç)
+*2. yeni bir api yazıldı .net8 ile. bu api java ile yazılana baglandı. gelen veriyi uygun formata cevirip kendi projemizde kullandık.
+
+
+API çeşitleri
+1.SOAP teknolojisi: (.asmx olan proje türleri.) web reference olarak ekleyip kullanabiliyoruz.
+https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?op=TCKimlikNoDogrula
+nüfus müdürlüğünün bize sundugu bir web servis.
+2.Rest teknolojisi: urlden çağrı almaya yarıyor. https://kontrol/TCNoKontrol/?value=...
+
+API Testi nasıl Yapılır?
+*.net 3 ....swagger eklentisi manuel olarak biz kendimiz ekledik.
+*.net 5 ve sonrasında swagger eklentisi otomatik geliyor. (swagger aralıcıgı ile browser üzerinden test yapabiliyoruz.)
+*postman uygulamasını kullanarak api'yi test edebilirz. (postman indirip -üyelik açıp )
+
+
+
+
+https://www.sanaldata.com/jquery-kredi-karti-formu-animasyonu#google_vignette
+
+
+1.
+
+
+
+
+
+

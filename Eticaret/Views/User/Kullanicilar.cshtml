@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Eticaret.ViewModels.UserRole>
+
+@{
+	ViewData["Title"] = "Kullanicilar";
+	Layout = "_LayoutAdmin";
+}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+
+<div class="col-md-10">
+	@*
+	<p>
+	<a asp-action="KullaniciEkle">Yeni Kullanici Ekle</a>
+	<br />
+	<a asp-action="KullaniciRolAta">Kullanıcıya Rol Ata</a>
+	</p> *@
+
+	<nav>
+		<ul>
+			<li>
+				<a asp-action="KullaniciEkle">
+					<i class="fa fa-user-plus"></i> Yeni Kullanıcı Ekle
+				</a>
+			</li>
+			<li>
+				<a asp-action="KullaniciRolAta">
+					<i class="fa fa-user-cog"></i> Kullanıcıya Rol Ata
+				</a>
+			</li>
+			<li>
+				<a asp-action="KullaniciOnay">
+					<i class="fa fa-user-cog"></i> Kullanıcı Onay
+				</a>
+			</li>
+		</ul>
+	</nav>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.UserName)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.RolName)
+				</th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>					
+					<td>						
+						@Html.DisplayFor(modelItem => item.UserName)
+					</td>
+					<td>						
+						@Html.DisplayFor(modelItem => item.RolName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Id)
+					</td>
+					<td>
+						@* <button type="button" id="SilBtn" class="btn btn-outline-info" onclick="Sil('@item.Id')">Sil</button> *@					
+						 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+@* 
+<script>
+	function Sil(id) {
+		// let username=document.getElementById('item_UserName').value;
+		// let rolname=document.getElementById('item_RolName').value;
+
+		// alert(username);
+		// alert(rolname);
+		alert(id)
+		$.ajax({
+			url: "/User/Delete/?id=" +id,
+			type: 'post',
+
+			success: function () {
+
+				// if () {
+
+				// }
+
+			},
+			error: function () {
+
+			}
+		});
+	}
+
+</script>
+ *@

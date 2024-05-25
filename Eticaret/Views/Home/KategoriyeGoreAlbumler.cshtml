@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Eticaret.Models.Album>
+
+@{
+	ViewData["Title"] = "KategoriyeGoreAlbumler";
+
+}
+
+<h1>KategoriyeGoreAlbumler</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table" style="margin-top:2%;">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Ad)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.AlbumArtUrl)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Baslik)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Fiyat)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.AktifMi)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Artist)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Tur)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			
+			<tr>
+				<td>
+					<a href=" /Home/Details/@item.AlbumId">
+						@Html.DisplayFor(modelItem => item.Ad)
+				  </a>
+				</td>
+				<td>
+						@*    @Html.DisplayFor(modelItem => item.AlbumArtUrl) *@
+					<img src="@item.AlbumArtUrl" style="width:250px" />
+				</td>
+				<td>
+						@Html.DisplayFor(modelItem => item.Baslik)
+				</td>
+				<td>
+						@Html.DisplayFor(modelItem => item.Fiyat)
+				</td>
+				<td>
+						@Html.DisplayFor(modelItem => item.AktifMi)
+				</td>
+				<td>
+						@Html.DisplayFor(modelItem => item.Artist.Name)
+				</td>
+				<td>
+						@Html.DisplayFor(modelItem => item.Tur.TurAdi)
+				</td>
+					@*   <td>
+			<a asp-action="Edit" asp-route-id="@item.AlbumId">Edit</a> |
+			<a asp-action="Details" asp-route-id="@item.AlbumId">Details</a> |
+			<a asp-action="Delete" asp-route-id="@item.AlbumId">Delete</a>
+			</td> *@
+			</tr>
+			
+		}
+	</tbody>
+</table>
